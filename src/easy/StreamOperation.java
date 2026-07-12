@@ -58,6 +58,20 @@ public class StreamOperation {
         List<String> strings = Arrays.asList("", "", " ", "    ", "Hello", "World", "");
         Optional<String> firstNonEmpty = strings.stream().filter(s -> !s.isBlank()).findFirst();
         firstNonEmpty.ifPresent(System.out::println);
+
+//        Count occurence of String in Array
+        Map<String, Long> stringCharCount = Arrays.stream(names).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        System.out.println(stringCharCount);
+//        Count the characters of String
+
+//        {Java=4, C++=3, Docker=6, Spring=6, Python=6}
+//        String[] names = {"Java", "Python", "Java", "C++", "Spring", "Python", "Docker"};
+//        String[] names = {"Java"=4, "Python"=6, "Java"=4, "C++"=3, "Spring"=6, "Python"=6, "Docker=6"};
+
+        Map<String, Integer> countStringChar = Arrays.stream(names).distinct().collect(Collectors.groupingBy(Function.identity(), Collectors.summingInt(value -> value.length())));
+        System.out.println(countStringChar);
+
+
     }
 
 

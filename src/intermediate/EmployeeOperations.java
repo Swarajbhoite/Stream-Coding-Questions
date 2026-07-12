@@ -1,5 +1,6 @@
 package intermediate;
 
+import java.security.KeyStore;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,9 +30,9 @@ public class EmployeeOperations {
 //        1. How many male and female employees are there in the organization ?
 
         Map<String, List<String>> empGenderWise = employeeList.stream()
-                .collect(Collectors.groupingBy(Employee::getGender,Collectors.mapping(Employee::getName,Collectors.toList())));
-        System.out.println("Male :"+empGenderWise.get("Male"));
-        System.out.println("Female :"+empGenderWise.get("Female"));
+                .collect(Collectors.groupingBy(Employee::getGender, Collectors.mapping(Employee::getName, Collectors.toList())));
+        System.out.println("Male :" + empGenderWise.get("Male"));
+        System.out.println("Female :" + empGenderWise.get("Female"));
 
 //        2. Print the name of all departments in the organization ?
         System.out.println("===============================================");
@@ -42,8 +43,8 @@ public class EmployeeOperations {
 //        3. What is the average age of male and female employees ?
         System.out.println("===============================================");
         Map<String, Double> avgAge = employeeList.stream().collect(Collectors.groupingBy(Employee::getGender, Collectors.averagingInt(Employee::getAge)));
-        System.out.println("Average Age of Male: "+avgAge.get("Male"));
-        System.out.println("Average Age of Female: "+avgAge.get("Female"));
+        System.out.println("Average Age of Male: " + avgAge.get("Male"));
+        System.out.println("Average Age of Female: " + avgAge.get("Female"));
 //        4. Get the details of highest paid employee in the organization ?
         System.out.println("===============================================");
         Optional<Employee> highestPaidEMp = employeeList.stream().sorted(Comparator.comparingDouble(Employee::getSalary).reversed()).findFirst();
@@ -72,7 +73,6 @@ public class EmployeeOperations {
         youngestMaleDev.ifPresent(System.out::println);
 
 
-
 //                9. Who has the most working experience in the organization ?
         System.out.println("===============================================");
 
@@ -86,7 +86,6 @@ public class EmployeeOperations {
         System.out.println(salesCount);
 
 
-
 //        11. List down the names of all employees in each department ?
         System.out.println("===============================================");
 
@@ -97,20 +96,26 @@ public class EmployeeOperations {
 
         OptionalDouble averageSalOrg = employeeList.stream().mapToDouble(Employee::getSalary).average();
         double totalSalOrg = employeeList.stream().mapToDouble(Employee::getSalary).sum();
-        System.out.println("Average: "+averageSalOrg);
-        System.out.println("Sum: "+totalSalOrg);
+        System.out.println("Average: " + averageSalOrg);
+        System.out.println("Sum: " + totalSalOrg);
 //        13.  Separate the employees who are younger or equal to 25 years from those employees who are older than 25 years ?
         System.out.println("===============================================");
 
         Map<Boolean, List<String>> empAgeMoreThanTwoFive = employeeList.stream().collect(Collectors.partitioningBy(employee -> employee.getAge() > 25, Collectors.mapping(Employee::getName, Collectors.toList())));
-        System.out.println("Greater than 25:"+empAgeMoreThanTwoFive.get(true));
-        System.out.println("Less than 25:"+empAgeMoreThanTwoFive.get(false));
+        System.out.println("Greater than 25:" + empAgeMoreThanTwoFive.get(true));
+        System.out.println("Less than 25:" + empAgeMoreThanTwoFive.get(false));
         //                14.  Who is the oldest employee in the organization?(By Age)
         System.out.println("===============================================");
 
 
         Optional<Employee> oldestEmp = employeeList.stream().sorted(Comparator.comparingInt(Employee::getAge).reversed()).findFirst();
         oldestEmp.ifPresent(System.out::println);
+//Find the department with more than 2 emp
+        System.out.println("+++++++++++++++++++++++++++");
+        Map<String, Long> depts = employeeList.stream().collect(Collectors.groupingBy(Employee::getDepartment, Collectors.counting()))
+                .entrySet().stream().filter(entry -> entry.getValue() > 2)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        System.out.println(depts);
 
 
     }
