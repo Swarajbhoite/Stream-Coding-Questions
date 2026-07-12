@@ -2,6 +2,7 @@ package intermediate;
 
 import java.security.KeyStore;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class EmployeeOperations {
@@ -117,6 +118,12 @@ public class EmployeeOperations {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         System.out.println(depts);
 
+//        Highest salary emp and salary of each dept
+//        employeeList.stream().collect(Collectors.groupingBy(Employee::getDepartment,Collectors.maxBy(Comparator.comparingDouble(Employee::getSalary))),Collectors.toMap(Employee::getDepartment,Employee::getName));
+
+        String str = "Java";
+        str.chars().mapToObj(value -> (char) value).collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet()
+                .stream().map(Map.Entry::getValue).sorted(Comparator.comparingInt(value -> value)).findFirst();
 
     }
 
