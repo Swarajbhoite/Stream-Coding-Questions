@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+
 public class EmployeeOperations {
 
     public static void main(String[] args) {
@@ -120,10 +121,20 @@ public class EmployeeOperations {
 
 //        Highest salary emp and salary of each dept
 //        employeeList.stream().collect(Collectors.groupingBy(Employee::getDepartment,Collectors.maxBy(Comparator.comparingDouble(Employee::getSalary))),Collectors.toMap(Employee::getDepartment,Employee::getName));
+        System.out.println("---------------");
+        String str = "avavJa";
+        Character key = str.chars().mapToObj(value -> (char) value).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey();
 
-        String str = "Java";
-        str.chars().mapToObj(value -> (char) value).collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet()
-                .stream().map(Map.Entry::getValue).sorted(Comparator.comparingInt(value -> value)).findFirst();
+
+        System.out.println("Most -Frequest character: " + key);
+        Character nonFreq = str.chars().mapToObj(value -> (char) value)
+                .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()))
+                .entrySet().stream().filter(e -> e.getValue() == 1).findFirst().get().getKey();
+        System.out.println(nonFreq);
+        ;
+
+//        first.ifPresent(System.out::println);
 
     }
 
